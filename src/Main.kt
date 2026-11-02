@@ -1,4 +1,3 @@
-
 // Data class used to store note information
 data class Note(
     var title: String,
@@ -17,8 +16,9 @@ fun main() {
         println("\n===== SIMPLE NOTE MANAGER =====")
         println("1. Create Note")
         println("2. View Notes")
-        println("3. Exit")
-        println("4. Edit Note")
+        println("3. Edit Note")
+        println("4. Delete Note")
+        println("5. Exit")
         print("Choose an option: ")
 
         when (readln()) {
@@ -27,12 +27,14 @@ fun main() {
 
             "2" -> viewNotes()
 
-            "3" -> {
+            "3" -> editNote()
+
+            "4" -> deleteNote()
+
+            "5" -> {
                 println("Goodbye!")
                 running = false
             }
-
-            "4" -> editNote()
 
             else -> println("Invalid option. Please try again.")
         }
@@ -117,4 +119,51 @@ fun editNote() {
     note.content = newContent
 
     println("Note updated successfully!")
+}
+
+// Function to delete an existing note
+fun deleteNote() {
+
+    if (notes.isEmpty()) {
+        println("No notes available to delete.")
+        return
+    }
+
+    println("\n===== DELETE NOTE =====")
+
+    // Display all available notes
+    for ((index, note) in notes.withIndex()) {
+        println("${index + 1}. ${note.title}")
+    }
+
+    // Ask the user which note to delete
+    print("Enter the note number to delete: ")
+
+    val selection = readln().toIntOrNull()
+
+    // Validate the selected note number
+    if (selection == null || selection < 1 || selection > notes.size) {
+        println("Invalid note number.")
+        return
+    }
+
+    // Get the selected note
+    val note = notes[selection - 1]
+
+    // Ask for confirmation before deleting
+    print("Are you sure you want to delete '${note.title}'? (yes/no): ")
+
+    val confirmation = readln()
+
+    if (confirmation.equals("yes", ignoreCase = true)) {
+
+        // Remove the selected note
+        notes.removeAt(selection - 1)
+
+        println("Note deleted successfully!")
+
+    } else {
+
+        println("Note deletion cancelled.")
+    }
 }
