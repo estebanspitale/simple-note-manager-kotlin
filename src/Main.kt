@@ -4,7 +4,7 @@ data class Note(
     var content: String
 )
 
-// Collection that will store all notes
+// Collection that stores all notes
 val notes = mutableListOf<Note>()
 
 fun main() {
@@ -13,13 +13,7 @@ fun main() {
 
     while (running) {
 
-        println("\n===== SIMPLE NOTE MANAGER =====")
-        println("1. Create Note")
-        println("2. View Notes")
-        println("3. Edit Note")
-        println("4. Delete Note")
-        println("5. Exit")
-        print("Choose an option: ")
+        showMenu()
 
         when (readln()) {
 
@@ -41,11 +35,28 @@ fun main() {
     }
 }
 
-// Function to create a note
+// Displays the main menu
+fun showMenu() {
+
+    println("\n===== SIMPLE NOTE MANAGER =====")
+    println("1. Create Note")
+    println("2. View Notes")
+    println("3. Edit Note")
+    println("4. Delete Note")
+    println("5. Exit")
+    print("Choose an option: ")
+}
+
+// Creates a new note and adds it to the collection
 fun createNote() {
 
     print("Enter note title: ")
     val title = readln()
+
+    if (title.isBlank()) {
+        println("Title cannot be empty.")
+        return
+    }
 
     print("Enter note content: ")
     val content = readln()
@@ -57,7 +68,7 @@ fun createNote() {
     println("Note created successfully!")
 }
 
-// Function to display all notes
+// Displays all notes with title and content
 fun viewNotes() {
 
     if (notes.isEmpty()) {
@@ -75,7 +86,15 @@ fun viewNotes() {
     }
 }
 
-// Function to edit an existing note
+// Displays only note titles for selection purposes
+fun displayNoteTitles() {
+
+    for ((index, note) in notes.withIndex()) {
+        println("${index + 1}. ${note.title}")
+    }
+}
+
+// Allows the user to edit an existing note
 fun editNote() {
 
     if (notes.isEmpty()) {
@@ -85,43 +104,34 @@ fun editNote() {
 
     println("\n===== EDIT NOTE =====")
 
-    // Display all available notes
-    for ((index, note) in notes.withIndex()) {
-        println("${index + 1}. ${note.title}")
-    }
+    displayNoteTitles()
 
-    // Ask the user which note to edit
     print("Enter the note number to edit: ")
 
     val selection = readln().toIntOrNull()
 
-    // Validate the selected note number
-    if (selection == null || selection < 1 || selection > notes.size) {
+    if (selection == null || selection !in 1..notes.size) {
         println("Invalid note number.")
         return
     }
 
-    // Get the selected note
     val note = notes[selection - 1]
 
     println("\nEditing: ${note.title}")
 
-    // Ask for the new title
     print("Enter new title: ")
     val newTitle = readln()
 
-    // Ask for the new content
     print("Enter new content: ")
     val newContent = readln()
 
-    // Update the existing note
     note.title = newTitle
     note.content = newContent
 
     println("Note updated successfully!")
 }
 
-// Function to delete an existing note
+// Allows the user to delete an existing note
 fun deleteNote() {
 
     if (notes.isEmpty()) {
@@ -131,33 +141,25 @@ fun deleteNote() {
 
     println("\n===== DELETE NOTE =====")
 
-    // Display all available notes
-    for ((index, note) in notes.withIndex()) {
-        println("${index + 1}. ${note.title}")
-    }
+    displayNoteTitles()
 
-    // Ask the user which note to delete
     print("Enter the note number to delete: ")
 
     val selection = readln().toIntOrNull()
 
-    // Validate the selected note number
-    if (selection == null || selection < 1 || selection > notes.size) {
+    if (selection == null || selection !in 1..notes.size) {
         println("Invalid note number.")
         return
     }
 
-    // Get the selected note
     val note = notes[selection - 1]
 
-    // Ask for confirmation before deleting
     print("Are you sure you want to delete '${note.title}'? (yes/no): ")
 
     val confirmation = readln()
 
     if (confirmation.equals("yes", ignoreCase = true)) {
 
-        // Remove the selected note
         notes.removeAt(selection - 1)
 
         println("Note deleted successfully!")
@@ -167,3 +169,4 @@ fun deleteNote() {
         println("Note deletion cancelled.")
     }
 }
+
