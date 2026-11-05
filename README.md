@@ -8,7 +8,7 @@ The purpose of this software is to learn and demonstrate the fundamental concept
 
 This project was developed as part of the CSE 310 course to explore Kotlin programming and object-oriented design principles.
 
-[Software Demo Video](VIDEO_LINK)
+[Software Demo Video](https://youtu.be/Kg-XGbMeQmM)
 
 ## Development Environment
 
